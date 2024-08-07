@@ -14,4 +14,8 @@ class Grupo extends Model
     public function fuente() {
         return $this->belongsTo(Fuente::class);
     }
+
+    public function alimentos() {
+        return $this->hasMany(Alimento::class);
+    }
 }

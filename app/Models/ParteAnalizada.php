@@ -11,4 +11,8 @@ class ParteAnalizada extends Model
 
     protected $fillable = ['parte', 'detalles'];
 
+    public function alimentos() {
+        return $this->hasMany(Alimento::class);
+    }
+
 }
