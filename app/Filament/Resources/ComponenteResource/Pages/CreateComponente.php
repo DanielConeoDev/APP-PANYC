@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateComponente extends CreateRecord
 {
     protected static string $resource = ComponenteResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

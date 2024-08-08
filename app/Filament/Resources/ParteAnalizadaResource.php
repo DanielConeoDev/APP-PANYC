@@ -13,22 +13,31 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
+use Filament\Forms\Components\Section;
+
 class ParteAnalizadaResource extends Resource
 {
     protected static ?string $model = ParteAnalizada::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Parametros';
+
+    protected static ?string $navigationIcon = 'gmdi-bubble-chart-tt';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('parte')
-                    ->required()
-                    ->maxLength(255)
-                    ->unique(),
-                Forms\Components\Textarea::make('detalles')
-                    ->maxLength(65535),
+                Section::make('Crear Parte Analizada')
+                    ->icon('gmdi-bubble-chart-tt')
+                    //->description('Prevent abuse by limiting the number of requests per period')
+                    ->schema([
+                        Forms\Components\TextInput::make('parte')
+                            ->label('Parte Analizada')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\RichEditor::make('detalles')
+                            ->maxLength(65535),
+                    ]),
             ]);
     }
 
@@ -37,17 +46,18 @@ class ParteAnalizadaResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('parte')
-                    ->sortable()
+                    ->label('Parte Analizada')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('detalles')
-                    ->sortable()
-                    ->searchable(),
+                    ->markdown()
+                    ->toggleable(true, $isToggledHiddenByDefault = true),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
