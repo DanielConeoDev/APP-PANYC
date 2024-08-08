@@ -9,4 +9,10 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateFuente extends CreateRecord
 {
     protected static string $resource = FuenteResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+    
 }

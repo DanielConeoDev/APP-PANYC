@@ -26,7 +26,9 @@ class FuenteResource extends Resource
 {
     protected static ?string $model = Fuente::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Información';
+
+    protected static ?string $navigationIcon = 'gmdi-source-tt';
 
     public static function getModelLabel(): string
     {
@@ -40,7 +42,7 @@ class FuenteResource extends Resource
                 Grid::make(1)
                     ->schema([
                         Wizard::make([
-                            Wizard\Step::make('Datos De Fuente')
+                            Wizard\Step::make('Datos de Fuente')
                                 ->schema([
                                     TextInput::make('fuente')
                                         ->required()
@@ -49,7 +51,7 @@ class FuenteResource extends Resource
                                     RichEditor::make('detalles')
                                         ->label('Detalles adicionales'),
                                 ]),
-                            Wizard\Step::make('Detalles De Publicación')
+                            Wizard\Step::make('Detalles de Publicación')
                                 ->schema([
                                     Grid::make([
                                         'default' => 2,
@@ -69,10 +71,10 @@ class FuenteResource extends Resource
                                                 ->unique(Fuente::class, 'url')
                                                 ->label('URL de la fuente')
                                                 ->columnSpan(2),
-                                        ])
+                                        ]),
                                 ]),
-                        ])
-                    ])
+                        ]),
+                    ]),
             ]);
     }
 
@@ -81,26 +83,23 @@ class FuenteResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('fuente')
-                    ->label('Nombre de la fuente')
-                    ->sortable()
+                    ->label('Fuente')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('pais')
-                    ->label('País de la fuente')
-                    ->sortable()
+                    ->label('País')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('fecha_publicacion')
                     ->label('Fecha de publicación')
-                    ->sortable()
                     ->date(),
                 Tables\Columns\TextColumn::make('url')
                     ->badge()
-                    ->label('URL de la fuente')
+                    ->label('URL')
                     ->url(fn ($record) => $record->url)
                     ->openUrlInNewTab()
-                    ->formatStateUsing(fn ($state) => 'Explorar')
-                    ->sortable(),
+                    ->formatStateUsing(fn ($state) => 'Explorar'),
                 Tables\Columns\TextColumn::make('detalles')
                     ->label('Detalles adicionales')
+                    ->markdown()
                     ->limit(50)
                     ->toggleable(true, $isToggledHiddenByDefault = true),
                 Tables\Columns\TextColumn::make('created_at')
@@ -117,17 +116,8 @@ class FuenteResource extends Resource
             ->filters([
                 Filter::make('pais')
                     ->label('Filtrar por País'),
-                Filter::make('fecha_publicacion')
-                    ->label('Filtrar por Fecha de Publicación')
-                    ->form([
-                        DatePicker::make('fecha_publicacion')->label('Desde'),
-                        DatePicker::make('fecha_publicacion')->label('Hasta'),
-                    ])
-                    ->query(function ($query, array $data) {
-                        return $query
-                            ->when($data['fecha_publicacion'], fn ($query, $date) => $query->whereDate('fecha_publicacion', '>=', $date))
-                            ->when($data['fecha_publicacion'], fn ($query, $date) => $query->whereDate('fecha_publicacion', '<=', $date));
-                    }),
+                Filter::make('fuente')
+                    ->label('Filtrar por Fuente'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -147,11 +137,11 @@ class FuenteResource extends Resource
             ->schema([
                 TextEntry::make('fuente')
                     ->label('Fuente'),
-                TextEntry::make('pais')
-                    ->label('País'),
                 TextEntry::make('fecha_publicacion')
                     ->label('Fecha de Publicación')
                     ->date(),
+                TextEntry::make('pais')
+                    ->label('País'),
                 TextEntry::make('url')
                     ->label('URL')
                     ->badge()
