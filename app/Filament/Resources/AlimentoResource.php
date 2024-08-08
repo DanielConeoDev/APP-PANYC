@@ -21,6 +21,10 @@ use Filament\Forms\Components\Repeater;
 use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\TextEntry;
 
+use Filament\Infolists\Components\RepeatableEntry;
+use Filament\Infolists\Components\Tabs;
+
+
 class AlimentoResource extends Resource
 {
     protected static ?string $model = Alimento::class;
@@ -103,37 +107,37 @@ class AlimentoResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('codigo')
-                ->label('Código')
-                ->sortable()
-                ->searchable(),
+                    ->label('Código')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('alimento')
-                ->label('Alimento')
-                ->searchable(),
+                    ->label('Alimento')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('grupo.fuente.fuente')
-                ->label('Fuente')
-                ->toggleable(true, $isToggledHiddenByDefault = true)
-                ->searchable(),
+                    ->label('Fuente')
+                    ->toggleable(true, $isToggledHiddenByDefault = true)
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('grupo.grupo')
-                ->label('Grupo Alimenticio')
-                ->searchable(),
+                    ->label('Grupo Alimenticio')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('parte.parte')
-                ->label('Parte Analizada')
-                ->searchable(),
+                    ->label('Parte Analizada')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('itemComponentes.analisis.analisis')
-                ->label('Análisis')
-                ->toggleable(true, $isToggledHiddenByDefault = true),
+                    ->label('Análisis')
+                    ->toggleable(true, $isToggledHiddenByDefault = true),
                 Tables\Columns\TextColumn::make('itemComponentes.componente.componente')
-                ->toggleable(true, $isToggledHiddenByDefault = true)
-                ->label('Componente'),
+                    ->toggleable(true, $isToggledHiddenByDefault = true)
+                    ->label('Componente'),
                 Tables\Columns\TextColumn::make('itemComponentes.valor')
-                ->toggleable(true, $isToggledHiddenByDefault = true)
-                ->label('Valor'),
+                    ->toggleable(true, $isToggledHiddenByDefault = true)
+                    ->label('Valor'),
                 Tables\Columns\TextColumn::make('created_at')
-                ->label('Creacion')
-                ->toggleable(true, $isToggledHiddenByDefault = true),
+                    ->label('Creacion')
+                    ->toggleable(true, $isToggledHiddenByDefault = true),
                 Tables\Columns\TextColumn::make('updated_at')
-                ->label('Actualizacion')
-                ->toggleable(true, $isToggledHiddenByDefault = true),
+                    ->label('Actualizacion')
+                    ->toggleable(true, $isToggledHiddenByDefault = true),
             ])
             ->filters([
                 //
@@ -154,14 +158,42 @@ class AlimentoResource extends Resource
     {
         return $infolist
             ->schema([
-                TextEntry::make('codigo')
-                    ->label('Codigo'),
-                TextEntry::make('alimento')
-                    ->label('Alimento'),
-                TextEntry::make('itemComponentes.componente.componente')
-                    ->label('Componetes'),
+                Tabs::make('Información de Alimentos')
+                    ->tabs([
+                        Tabs\Tab::make('Datos')
+                            ->schema([
+                                TextEntry::make('codigo')
+                                    ->label('Código'),
+                                TextEntry::make('alimento')
+                                    ->label('Alimento'),
+                            ]),
+                        Tabs\Tab::make('Información')
+                            ->schema([
+                                TextEntry::make('grupo.fuente.fuente')
+                                    ->label('Fuente'),
+                                TextEntry::make('grupo.grupo')
+                                    ->label('Grupo Alimenticio'),
+                                TextEntry::make('parte.parte')
+                                    ->label('Parte Analizada'),
+                            ]),
+                        Tabs\Tab::make('Componentes')
+                            ->schema([
+                                RepeatableEntry::make('itemComponentes')
+                                    ->label('Componentes')
+                                    ->schema([
+                                        TextEntry::make('analisis.analisis')
+                                            ->label('Análisis'),
+                                        TextEntry::make('componente.componente')
+                                            ->label('Componente'),
+                                        TextEntry::make('valor')
+                                            ->label('Valor'),
+                                    ])
+                            ]),
+                    ])
+                    ->columnSpanFull(),
             ]);
     }
+
 
     public static function getRelations(): array
     {
