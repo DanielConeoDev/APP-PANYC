@@ -1,0 +1,1 @@
+<img src="https://i0.wp.com/unisinucartagena.edu.co/wp-content/uploads/2019/06/logo-unisinu-cartagena-rojo.png?ssl=1" alt="Logo Unisinu" />

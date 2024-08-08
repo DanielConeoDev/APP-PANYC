@@ -19,7 +19,7 @@ class ParteAnalizadaResource extends Resource
 {
     protected static ?string $model = ParteAnalizada::class;
 
-    protected static ?string $navigationGroup = 'Parametros';
+    protected static ?string $navigationGroup = 'Parámetros';
 
     protected static ?string $navigationIcon = 'gmdi-bubble-chart-tt';
 

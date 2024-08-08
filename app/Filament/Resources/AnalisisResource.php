@@ -19,7 +19,9 @@ class AnalisisResource extends Resource
 {
     protected static ?string $model = Analisis::class;
 
-    protected static ?string $navigationGroup = 'Parametros';
+    protected static ?string $navigationGroup = 'Parámetros';
+
+    protected static ?string $navigationLabel = 'Tipo Análisis';
 
     protected static ?string $navigationIcon = 'gmdi-science-tt';
 
@@ -27,12 +29,12 @@ class AnalisisResource extends Resource
     {
         return $form
             ->schema([
-                Section::make('Crear Tipo de Analisis')
+                Section::make('Crear Tipo de Análisis')
                     ->icon('gmdi-science-tt')
                     //->description('Prevent abuse by limiting the number of requests per period')
                     ->schema([
                         Forms\Components\TextInput::make('analisis')
-                            ->label('Tipo de Analisis')
+                            ->label('Tipo de Análisis')
                             ->required()
                             ->unique(Analisis::class, 'analisis')
                             ->maxLength(255),

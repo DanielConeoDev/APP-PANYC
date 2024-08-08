@@ -20,7 +20,7 @@ class ComponenteResource extends Resource
 {
     protected static ?string $model = Componente::class;
 
-    protected static ?string $navigationGroup = 'Parametros';
+    protected static ?string $navigationGroup = 'Parámetros';
 
     protected static ?string $navigationIcon = 'gmdi-hive-tt';
 
